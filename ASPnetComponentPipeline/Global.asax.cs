@@ -38,6 +38,7 @@ namespace ASPnetComponentPipeline
         {
             var container = new WindsorContainer(); 
             container.Register(Component.For<HomeController>().ImplementedBy<HomeController>().LifeStyle.Transient);
+            container.Register(Component.For<IComponentProvider>().ImplementedBy<ComponentProvider>().LifeStyle.Transient);
             container.Register(Component.For<IActionInvoker>().ImplementedBy<ComponentiserInvoker>().LifeStyle.Transient);
             return container;
         }

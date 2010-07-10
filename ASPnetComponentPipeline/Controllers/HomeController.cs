@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using ASPnetComponentPipeline.ViewModels;
 
 namespace ASPnetComponentPipeline.Controllers
 {
@@ -16,11 +17,5 @@ namespace ASPnetComponentPipeline.Controllers
         {
             return View();
         }
-    }
-
-    public class HomeViewModel
-    {
-        public string Message { get; set; }
-        public string Component_Title { get; set; }
     }
 }

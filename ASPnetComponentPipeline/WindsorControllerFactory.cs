@@ -16,6 +16,8 @@ namespace ASPnetComponentPipeline
 
         protected override IController GetControllerInstance(RequestContext context, Type controllerType)
         {
+            if (controllerType == null) 
+                return null;
             return (IController)_container.Resolve(controllerType);
         }
 
