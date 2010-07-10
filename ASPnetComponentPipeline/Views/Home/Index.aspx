@@ -9,4 +9,5 @@
     Component Data: <h2><%= Html.Encode(Model.Component_Title) %></h2>
     View Model Data: <h2><%= Html.Encode(Model.Message) %></h2>
     View Model Data: <h2><%= Html.Encode(ViewData.MasterPageModel().SiteTitle)%></h2>
+    View Model Data: <h2><%= Html.Encode(this.MasterPageModel().SiteTitle)%></h2>
 </asp:Content>
