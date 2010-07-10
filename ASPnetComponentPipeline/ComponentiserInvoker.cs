@@ -1,7 +1,7 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using ASPnetComponentPipeline.ViewModels;
 
 namespace ASPnetComponentPipeline
 {
@@ -18,7 +18,7 @@ namespace ASPnetComponentPipeline
         {
             var actionResult = base.InvokeActionMethod(controllerContext, actionDescriptor, parameters);
 
-            ViewDataDictionary viewData = GetViewData(actionResult);
+            ViewDataDictionary viewData = GetViewDataDictionary(actionResult);
             if (viewData != null)
             {
                 CreateMasterPageViewData(viewData);
@@ -31,7 +31,7 @@ namespace ASPnetComponentPipeline
 
         private void PopulateModelWithComponentData(object model)
         {
-            var properties = model.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            PropertyInfo[] properties = GetProperties(model);
 
             foreach (var property in properties)
             {
@@ -45,11 +45,26 @@ namespace ASPnetComponentPipeline
             }
         }
 
-        private void CreateMasterPageViewData(ViewDataDictionary viewData)
+        private PropertyInfo[] GetProperties(object model)
         {
+            return model.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
         }
 
-        private ViewDataDictionary GetViewData(ActionResult actionResult)
+        private void CreateMasterPageViewData(ViewDataDictionary viewData)
+        {
+            MasterPageViewModel model = new MasterPageViewModel();
+
+            PropertyInfo[] properties = GetProperties(model);
+            foreach (var property in properties)
+            {
+                var component = _provider.GetString(property.Name);
+                property.SetValue(model, component, null);
+            }
+
+            viewData[model.GetType().Name] = model;
+        }
+
+        private ViewDataDictionary GetViewDataDictionary(ActionResult actionResult)
         {
             ViewDataDictionary viewData = null;
 
